@@ -1,0 +1,104 @@
+import 'package:flutter/material.dart';
+
+class Style4 extends StatefulWidget {
+  const Style4({super.key});
+
+  @override
+  State<Style4> createState() => _Style4State();
+}
+
+class _Style4State extends State<Style4> {
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // ignore: prefer_const_constructors
+            Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: Text(
+                "NETFLIX",
+                style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red),
+              ),
+            ),
+            SizedBox(height: 100),
+            Input(size: size, title: "Email"),
+            SizedBox(height: 30),
+            Input(size: size, title: "Password"),
+            SizedBox(height: 5),
+            Text("Forgot your email and password?",
+                style: TextStyle(fontSize: 14, color: Colors.grey)),
+            SizedBox(height: 100),
+            Row(
+              children: [
+                Container(
+                  height: 60,
+                  width: size.width / 5,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          bottomLeft: Radius.circular(10))),
+                  child: Text(
+                    "Sign in",
+                    style: TextStyle(fontSize: 16, color: Colors.white),
+                  ),
+                ),
+                Container(
+                  height: 60,
+                  width: size.width / 1.6,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(10),
+                          bottomRight: Radius.circular(10))),
+                  child: Text(
+                    "Sign in",
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  ),
+                )
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Input extends StatelessWidget {
+  const Input({
+    Key? key,
+    required this.size,
+    required this.title,
+  }) : super(key: key);
+
+  final Size size;
+  final String title;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: size.width - 60,
+      height: 50,
+      alignment: Alignment.centerLeft,
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          color: Colors.grey, borderRadius: BorderRadius.circular(10)),
+      child: Text(
+        title,
+        style: TextStyle(fontSize: 15, color: Colors.white),
+      ),
+    );
+  }
+}
