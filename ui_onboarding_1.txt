@@ -1,0 +1,169 @@
+import 'package:aplication/onboarding/model/onboarding_model.dart';
+import 'package:aplication/onboarding/widget/page.dart';
+import 'package:aplication/onboarding/widget/slide_dot.dart';
+import 'package:flutter/material.dart';
+
+class Onboarding1 extends StatefulWidget {
+  const Onboarding1({super.key});
+
+  @override
+  State<Onboarding1> createState() => _Onboarding1State();
+}
+
+class _Onboarding1State extends State<Onboarding1> {
+  int _currentPage = 0;
+  final PageController _pageController = PageController(initialPage: 0);
+
+  _onPageChanged(int index) {
+    setState(() {
+      _currentPage = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Scaffold(
+      body: Stack(
+        children: [
+          Positioned.fill(child: Container(color: Colors.white)),
+          Positioned.fill(
+              child: PageView.builder(
+                  scrollDirection: Axis.horizontal,
+                  physics: NeverScrollableScrollPhysics(),
+                  controller: _pageController,
+                  onPageChanged: _onPageChanged,
+                  itemCount: listOnboarding.length,
+                  itemBuilder: ((context, index) => PageOnboarding(index)))),
+          Positioned(
+            bottom: 50,
+            left: 10,
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    if (_currentPage < 2) {
+                      _pageController.animateToPage(_currentPage + 1,
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.easeIn);
+                    }
+                  },
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                      color: Colors.grey,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(_currentPage != 2 ? "Next" : "Done",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold)),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 100.0),
+                  child: Row(
+                    children: <Widget>[
+                      for (int i = 0; i < listOnboarding.length; i++)
+                        if (i == _currentPage)
+                          SlideDot(true)
+                        else
+                          SlideDot(false),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+// ---------------------------- Slide dot ---------------------------//
+class SlideDot extends StatelessWidget {
+  bool isActive;
+  SlideDot(this.isActive);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(duration: Duration(milliseconds: 200),
+    margin: EdgeInsets.symmetric(horizontal: 7),
+    height: 10,
+    width: 10,
+    decoration: BoxDecoration(
+      color: isActive ? Colors.red : Colors.blueGrey,
+      shape: BoxShape.circle
+    ),);
+  }
+}
+
+// ---------------------------- Page ---------------------------//
+class PageOnboarding extends StatelessWidget {
+  final int index;
+
+  PageOnboarding(this.index);
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
+    return Scaffold(
+      backgroundColor: index == 1
+          ? Colors.white
+          : (index == 2 ? Colors.blueGrey : Colors.blueAccent[100]),
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 50),
+            child: Container(
+              width: size.width,
+              height: size.width,
+              child: Image.asset(listOnboarding[index].img),
+            ),
+          ),
+          SizedBox(
+            width: size.width,
+            height: size.height,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20.0, top: 180),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(listOnboarding[index].title,
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold)),
+                  SizedBox(height: 30),
+                  Text(listOnboarding[index].des,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.grey, fontSize: 16, fontWeight: FontWeight.bold))
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ---------------------------- Model ---------------------------//
+class OnBoardingModel {
+  final String img;
+  final String title;
+  final String des;
+
+  OnBoardingModel({required this.img, required this.title, required this.des});
+}
+
+final listOnboarding = [
+  OnBoardingModel(img: "assets/chair.png", title: "Modern chair", des: "Is an American multinational technology corporation headquartered in Cupertino, California, that designs, develops"),
+  OnBoardingModel(img: "assets/light.png", title: "Modern light", des: "Is an American multinational technology corporation headquartered in Cupertino, California, that designs, develops"),
+  OnBoardingModel(img: "assets/speaker.png", title: "Modern speaker", des: "Is an American multinational technology corporation headquartered in Cupertino, California, that designs, develops")
+];
